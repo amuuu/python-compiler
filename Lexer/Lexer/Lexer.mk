@@ -5,8 +5,8 @@
 ## Debug
 ProjectName            :=Lexer
 ConfigurationName      :=Debug
-WorkspacePath          :="C:/Users/Enigma/Documents/#My Documents/#Books and Slides/Compiler/Assignments/HW1/Lexer"
-ProjectPath            :="C:/Users/Enigma/Documents/#My Documents/#Books and Slides/Compiler/Assignments/HW1/Lexer/Lexer"
+WorkspacePath          :="C:/Users/Enigma/Documents/#My Documents/#Books and Slides/Compiler/Assignments/repo/amu-python-compiler/Lexer"
+ProjectPath            :="C:/Users/Enigma/Documents/#My Documents/#Books and Slides/Compiler/Assignments/repo/amu-python-compiler/Lexer/Lexer"
 IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
@@ -94,7 +94,7 @@ PreBuild:
 ## Objects
 ##
 $(IntermediateDirectory)/main.c$(ObjectSuffix): main.c $(IntermediateDirectory)/main.c$(DependSuffix)
-	$(CC) $(SourceSwitch) "C:/Users/Enigma/Documents/#My Documents/#Books and Slides/Compiler/Assignments/HW1/Lexer/Lexer/main.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IncludePath)
+	$(CC) $(SourceSwitch) "C:/Users/Enigma/Documents/#My Documents/#Books and Slides/Compiler/Assignments/repo/amu-python-compiler/Lexer/Lexer/main.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/main.c$(DependSuffix): main.c
 	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/main.c$(ObjectSuffix) -MF$(IntermediateDirectory)/main.c$(DependSuffix) -MM main.c
 
