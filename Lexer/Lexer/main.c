@@ -116,9 +116,6 @@ struct Token Lexer(FILE *sourceFile){
 							 (nextChar=='_'))
 						state=1;
 					
-					else if (nextChar<='9' && nextChar>='0')
-						state=2;
-					
 					else if (nextChar=='#')
 						state=5;
 					
@@ -144,12 +141,36 @@ struct Token Lexer(FILE *sourceFile){
 				
 					break;
 
-				case 2:
+				case 5: //#
+					if (nextChar != '\n')
+						state=5;
+					else
+						state=0;
+					break;
 
-
-
-					break; 
-
+				case 6:
+					if (nextChar == '"')
+						state=7;
+					break;
+				case 7:
+					if (nextChar == '"')
+						state=8;
+					break;
+				case 8:
+					if (nextChar != '"')
+						state=8;
+					else
+						state=9;
+					break;
+				case 9:
+					if (nextChar == '"')
+						state=10;
+					break;
+				case 10:
+					if (nextChar == '"')
+						state=0;
+					break;
+				
 				default:
 				
 					printf("Not expected.");
