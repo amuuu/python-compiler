@@ -69,7 +69,7 @@ enum Symbols isKeyword(char* word){
 			"raise", s_raise
 		};
 		for (int i=0; keywordTable[i].keyword; i++){
-			if(!strncmp(keywordTable[i].keyword, word, 80)){
+			if(strncmp(keywordTable[i].keyword, word, sizeof(word)/sizeof(word[0]))== 0){
 				return keywordTable[i].type_;
 			}
 		}
@@ -77,6 +77,14 @@ enum Symbols isKeyword(char* word){
 		
 };
 
+typedef struct Token makeToken(enum Symbols type, int ROW, int COL){
+		typedef struct Token token;
+		token.ROW = ROW;
+		token.COL = COL;
+		token.type = type;
+
+		return token;
+}
 
  struct Token Lexer(FILE *sourceFile){
  	enum Symbols LexiconType;
@@ -113,7 +121,7 @@ enum Symbols isKeyword(char* word){
 						state=6;
 						
 					else {
-						printf("INVALID CHARACTER AT THE BEGINNING.");
+						printf("INVALID CHARACTER AT THE BEGINNING.\n");
 						// return;
 					}
 						
@@ -125,11 +133,8 @@ enum Symbols isKeyword(char* word){
 						state = 1;
 					else {
 						lastChar = nextChar;
-						nextWord[length-2]='\0';
-						printf("###########");
-						printf(isKeyword(nextWord)? "True": "False");
-						printf("###########");
-//						return makeToken(isKeyword(nextWord));
+						nextWord[length-1]='\0';
+						return makeToken(isKeyword(nextWord), rowNo, colNo);
 					}
 				
 					break;
@@ -149,12 +154,12 @@ int main(int argc, char const *argv[])
 {
 	FILE *sourceFile;
 	if(argc < 2) {
-		printf("NO SOURCE CODE IN INPUT ARGUMENTS.\n");
-		if (!getch())
-			getch();
+		printf("No source code in running arguments, using the sample python source file.\n");
+		sourceFile = fopen("testSource.py", "r");
 	}
-//	sourceFile = fopen(argv[1], "r");
-	sourceFile = fopen("testSource.py", "r");
+	else {
+		sourceFile = fopen(argv[1], "r");
+	}
 	while(!feof(sourceFile)){
 		Token token;
 		token = Lexer(sourceFile);

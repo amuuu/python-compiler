@@ -1,1 +1,2 @@
-print("HELLO")
+def test
+for i in range
