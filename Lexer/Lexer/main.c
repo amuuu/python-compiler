@@ -24,7 +24,7 @@ enum Symbols {
 typedef struct Token {
 	int ROW, COL, BLKNO, BLKRD;
 	enum Symbols type;
-	char name[80];
+	char* name;
 } Token;
 
 
@@ -77,16 +77,20 @@ enum Symbols isKeyword(char* word){
 		
 };
 
-typedef struct Token makeToken(enum Symbols type, int ROW, int COL){
-		typedef struct Token token;
+struct Token makeToken(enum Symbols type, char* word, int ROW, int COL){
+		struct Token token;
 		token.ROW = ROW;
 		token.COL = COL;
 		token.type = type;
-
+		token.name = word;
 		return token;
 }
 
- struct Token Lexer(FILE *sourceFile){
+void printToken(struct Token t){
+	printf("ROW: %i, COL: %i, name: %s\n", t.ROW, t.COL, t.name);
+}
+
+struct Token Lexer(FILE *sourceFile){
  	enum Symbols LexiconType;
  	char nextChar, nextWord[80];
  	int state=0, length=0;
@@ -108,7 +112,8 @@ typedef struct Token makeToken(enum Symbols type, int ROW, int COL){
 					if(nextChar==' ' || nextChar=='\n') { length=0; }
 					
 					else if ((nextChar<='z' && nextChar>='a') ||
-							 (nextChar<='Z' && nextChar>='A'))
+							 (nextChar<='Z' && nextChar>='A') ||
+							 (nextChar=='_'))
 						state=1;
 					
 					else if (nextChar<='9' && nextChar>='0')
@@ -134,10 +139,16 @@ typedef struct Token makeToken(enum Symbols type, int ROW, int COL){
 					else {
 						lastChar = nextChar;
 						nextWord[length-1]='\0';
-						return makeToken(isKeyword(nextWord), rowNo, colNo);
+						return makeToken(isKeyword(nextWord), nextWord, rowNo, colNo);
 					}
 				
 					break;
+
+				case 2:
+
+
+
+					break; 
 
 				default:
 				
@@ -154,7 +165,7 @@ int main(int argc, char const *argv[])
 {
 	FILE *sourceFile;
 	if(argc < 2) {
-		printf("No source code in running arguments, using the sample python source file.\n");
+		printf("No source code in running arguments.\nUsing the sample python source file...\n");
 		sourceFile = fopen("testSource.py", "r");
 	}
 	else {
@@ -163,7 +174,7 @@ int main(int argc, char const *argv[])
 	while(!feof(sourceFile)){
 		Token token;
 		token = Lexer(sourceFile);
-		printf("HEREEEEE");
+		printToken(token);
 	}
 	return 0;
 }
